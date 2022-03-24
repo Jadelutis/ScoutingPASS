@@ -14,7 +14,7 @@ var config_data = `
       "Event":{
         "code":"e",
         "type":"event",
-        "defaultValue":"2022flwp",
+        "defaultValue":"2022marea",
         "required":"true",
         "disabled":"true"
       },
@@ -22,14 +22,11 @@ var config_data = `
         "code":"l",
         "type":"level",
         "choices":{
-          "qm":"Quals<br>",
-          "ef":"Eighth-Final<br>",
-          "qf":"Quarter-Final<br>",
-          "sf":"Semi-Final<br>",
-          "f":"Final"
+          "qm":"Quals<br>"
         },
         "defaultValue":"qm",
-        "required":"true"
+        "required":"true",
+	  "disabled":"true"
       },
       "Match #":{
         "code":"m",
@@ -102,11 +99,6 @@ var config_data = `
         "title": "Was Defended",
         "type":"bool"
       },
-      "Wallbot?": {
-        "code":"wbt",
-        "title": "Wallbot?",
-        "type":"bool"
-      },
       "Cargo Intake From": {
         "code":"cif",
         "title": "Cargo Intake From",
@@ -136,22 +128,8 @@ var config_data = `
           "2":"Mid<br>",
           "3":"High<br>",
           "4":"Traversal<br>",
-          "a":"Attempted but failed<br>",
-          "x":"Not attempted"
-        },
-        "defaultValue":"x"
-      },
-      "If climb failed,<br>Last successful rung,<br>if any": {
-        "code":"lsr",
-        "title": "If climb failed,<br>last successful rung,<br>if any",
-        "type":"radio",
-        "choices":{
-          "1":"Low<br>",
-          "2":"Mid<br>",
-          "3":"High<br>",
-          "4":"Traversal<br>",
-          "n":"No successful rung<br>",
-          "x":"n/a"
+          "f":"Attempted but Failed<br>",
+          "x":"Not Attempted"
         },
         "defaultValue":"x"
       },
@@ -215,7 +193,7 @@ var config_data = `
         "code":"co",
         "title": "Comments",
         "type":"text",
-        "size":15,
+        "size":25,
         "maxSize":50
       },
       "Confidence Rating": {

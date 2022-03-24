@@ -1,8 +1,3 @@
-// ScoutingPASS.js
-//
-// The guts of the ScountingPASS application
-// Written by Team 2451 - PWNAGE
-
 document.addEventListener("touchstart", startTouch, false);
 document.addEventListener("touchend", moveTouch, false);
 
@@ -58,15 +53,6 @@ function addCounter(table, idx, name, data){
   button2.setAttribute("onclick", "counter(this.parentElement, 1)");
   button2.innerHTML += "+";
   cell2.appendChild(button2);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
   return idx+1;
 }
 
@@ -88,7 +74,6 @@ function addFieldImage(table, idx, name, data) {
   undoButton.setAttribute("onclick", "undo(this.parentElement)");
   undoButton.innerHTML += "Undo";
   undoButton.setAttribute("id", "undo_"+data.code);
-  undoButton.setAttribute("class", "undoButton");
   cell.appendChild(undoButton);
 
   row = table.insertRow(idx);
@@ -167,15 +152,6 @@ function addText(table, idx, name, data) {
     inp.setAttribute("disabled", "");
   }
   cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
   return idx+1
 }
 
@@ -215,15 +191,6 @@ function addNumber(table, idx, name, data) {
     inp.setAttribute("required", "");
   }
   cell2.appendChild(inp);
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
   if (data.type == 'team') {
     row = table.insertRow(idx+1);
     cell1 = row.insertCell(0);
@@ -232,7 +199,6 @@ function addNumber(table, idx, name, data) {
     cell1.setAttribute("style", "text-align: center;");
     return idx+2;
   }
-
   return idx+1;
 }
 
@@ -278,14 +244,6 @@ function addRadio(table, idx, name, data) {
   inp.setAttribute("value", "");
   cell2.appendChild(inp);
 
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
-  }
-
   return idx+1;
 }
 
@@ -308,14 +266,6 @@ function addCheckbox(table, idx, name, data){
 
   if (data.type == 'bool') {
     cell2.innerHTML += "(checked = Yes)";
-  }
-
-  if (data.hasOwnProperty('defaultValue')) {
-    var def = document.createElement("input");
-    def.setAttribute("id", "default_"+data.code)
-    def.setAttribute("type", "hidden");
-    def.setAttribute("value", data.defaultValue);
-    cell2.appendChild(def);
   }
 
   return idx+1;
@@ -371,17 +321,7 @@ function addElement(table, idx, name, data){
 }
 
 function configure(){
-  try {
-    var mydata = JSON.parse(config_data);
-  } catch(err) {
-    console.log(`Error parsing configuration file`)
-    console.log(err.message)
-    var table = document.getElementById("prematch_table")
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    cell1.innerHTML = `Error parsing configuration file: ${err.message}`
-    return -1
-  }
+  var mydata = JSON.parse(config_data);
 
   if (mydata.hasOwnProperty('title')) {
     document.title = mydata.title;
@@ -438,8 +378,6 @@ function configure(){
     const [key, value] = el;
     idx = addElement(pmt, idx, key, value);
   });
-	
-  return 0
 }
 
 function getRobot(){
@@ -665,18 +603,9 @@ function clearForm() {
 
 		radio = code.indexOf("_")
 		if (radio > -1) {
-			var baseCode = code.substr(0, radio)
 			if (e.checked) {
 				e.checked = false
-				document.getElementById("display_"+baseCode).value = ""
-			}
-			var defaultValue = document.getElementById("default_"+baseCode).value
-			if (defaultValue != "") {
-				if (defaultValue == e.value) {
-					console.log("they match!")
-					e.checked = true
-					document.getElementById("display_"+baseCode).value = defaultValue
-				}
+				document.getElementById("display_"+code.substr(0, radio)).value = ""
 			}
 		} else {
 			if (e.type=="number" || e.type=="text" || e.type=="hidden") {
@@ -873,18 +802,18 @@ function onTeamnameChange(event){
  */
 function counter(element, step)
 {
-  var ctr = element.getElementsByClassName("counter")[0];
-  var result = parseInt(ctr.value) + step;
+		var ctr = element.getElementsByClassName("counter")[0];
+		var result = parseInt(ctr.value) + step;
 
-  if(isNaN(result)) {
-    result = 0;
-  }
+		if(isNaN(result)) {
+				result = 0;
+		}
 
-  if(result >= 0 || ctr.hasAttribute('data-negative')) {
-    ctr.value = result;
-  } else {
-    ctr.value = 0;
-  }
+		if(result >= 0 || ctr.hasAttribute('data-negative')) {
+				ctr.value = result;
+		} else {
+				ctr.value = 0;
+		}
 }
 
 function undo(event)
@@ -901,14 +830,14 @@ function undo(event)
    tempValue.pop();
    changingInput.value = JSON.stringify(tempValue);
    drawFields();
-}		
+    
+}
+		
 
 window.onload = function(){
-  var ret = configure();
-  if (ret != -1) {
-    var ec = document.getElementById("input_e").value;
-    getTeams(ec);
-    getSchedule(ec);
-    this.drawFields();
-  }
+	configure();
+	var ec = document.getElementById("input_e").value;
+	getTeams(ec);
+	getSchedule(ec);
+	this.drawFields();
 };
